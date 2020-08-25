@@ -40,7 +40,7 @@ ___
 DATABASE_URL=XXXXXXXXXXXX
 GOOGLE_CLIENT_ID=XXXXXXXXX
 GOOGLE_SECRET=XXXXXXXXXXX
-GOOGLE_CALLBACK=http://localhost:3000/auth/oauth2callback
+GOOGLE_CALLBACK=http://localhost:3000/auth/google/oauth2callback
 SESSION_SECRET=XXXXXXXXXXX
 ```
 - We'll use a single DATABASE_URL so that we can all add/remove data from the database as we move forward.
