@@ -240,6 +240,368 @@ function showProfile(req, res) {
 </div>
 
 <%- include('../partials/footer') %>
+```
+# 
+### Cross off an item on the list!  On to the next piece of functionality:
+## 
+### 'Update' functionality for Profile info:
+#
+#### Step 1:  Determine the method verb & route:
+#### (Why don't we need the ._id of the user in our request?)
+```
+PUT /users/profile
+```
+#### Step 2:  Write the UI.  We already have everything stubbed up, we just need to pop a route into that href in the profile card!:
+```html
+<!-- This is where we'll put our 'update' route -->
+<form action="/users/profile?_method=PUT" method="POST">
+```
+#### Step 3:  Write the route:
+```js
+router.put("/profile", isLoggedIn, usersCtrl.update);
+```
+#### Step 4:  Write the controller function:
+```js
+function update(req, res) {
+  User.findByIdAndUpdate(req.user._id, req.body, { new: true }).then(() => {
+    res.redirect("/users/profile");
+  });
+}
+```
+####  Step 5:  We already handled the view.  This one's done already!!!
+## 
+### Now that we've been through the 5-step process a few times, these instructions aren't going to explicitly number them every time.  
+##
+### Let's code the user 'show' page next:
+##
+#### We already have a link using the user's ._id on our index page.  Let's go write the route!:
+```js
+router.get("/:id", isLoggedIn, usersCtrl.show);
+```
+#### Then on to the controller function:
+```js
+function show(req, res) {
+  User.findById(req.params.id).then((userInfo) => {
+    res.render('users/show', {
+      title: 'User Details',
+      userInfo,
+      user: req.user
+    })
+  });
+}
+```
+#### Next, we'll need to create /views/users/show.ejs:
+```html
+<%- include('../partials/header') %>
 
+<h3><%= title %></h3>
+
+<div class="card" style="width: 18rem;">
+  <!-- If our user doesn't have an avatar image, let's use a silly cat picture! -->
+  <img id="avatarPhoto" style="height: 18rem;" class="card-img-top" src="<%= userInfo.avatar ? userInfo.avatar : 'http://theoldreader.com/kittens/300/300/'  %>" alt="Card image cap">
+  <div class="card-header">
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><%= userInfo.name %></h5>
+    <!-- Let's clean up the date data to show the day the user joined -->
+    <p class="card-text">Joined: <%= userInfo.createdAt.toLocaleString().split(',')[0] %></p>
+    <p class="card-text">Email: <a href="mailto:<%= userInfo.email %>"><%= userInfo.email %></a></p>
+    <p class="card-text">Favorite Games:</p>
+    <!-- This is where we'll iterate over the games with a forEach -->
+    <!-- This is where we'll render buttons to add/remove a user as a friend -->
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
+```
+#### That's a pretty sweet looking user profile.  (Not really, the styling is up to y'all on your own time...)
+##
+### Now that we can see each user's details, let's go all Facebook and implement a simple 'friend' feature.
+##
+#### Start by adding a 'friends' field to the user model.  We're going to use referencing.  Many users will have many friends, so we're going to store each user's 'friends' as ObjectId values in an array:
+```js
+const userSchema = new Schema(
+  {
+    name: String,
+    alias: String,
+    email: String,
+    avatar: String,
+    googleId: String,
+    bio: String,
+    // Add this to the model:
+    friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  },
+  {
+    timestamps: true,
+  }
+);
+```
+#### Now we'll need a button on the user 'show' page to handle a request for 'adding' a friend.  We don't need to send a data payload, as we have access to the ._id for the user we're 'friend'ing, and we always have access to the ._id for the user that's logged in!:
+```html
+<!-- This is where we'll render buttons to add/remove a user as a friend -->
+<% if (!userInfo._id.equals(user._id) && !user.friends.includes(userInfo._id)) { %>
+  <a href="/users/<%= userInfo._id %>/friend" class="btn btn-primary">Add Friend</a>
+<% } %>
+<% if (!userInfo._id.equals(user._id) && user.friends.includes(userInfo._id)) { %>
+  <a href="/users/<%= userInfo._id %>/unfriend" class="btn btn-primary">Remove Friend</a>
+<% } %>
+```
+#### We're adding routes for both adding AND removing friends.  Two geese with one stone!  Let's use route/controller names that indicate what we're trying to accomplish, as it's not in the normal scope of our chart:
+```js
+router.get("/:id/friend", isLoggedIn, usersCtrl.addFriend);
+router.get("/:id/unfriend", isLoggedIn, usersCtrl.removeFriend);
+```
+#### And now for the controller functions:
+```js
+function addFriend(req, res) {
+  req.user.friends.push(req.params.id);
+  req.user.save().then(() => {
+    res.redirect(`/users/${req.params.id}`);
+  });
+}
+
+function removeFriend(req, res) {
+  let idx = req.user.friends.indexOf(req.params.id);
+  req.user.friends.splice(idx, 1);
+  req.user.save().then(() => {
+    res.redirect(`/users/${req.params.id}`);
+  });
+}
+```
+#### Navigate to someone special in the user list and add them to your friend list!  Notice how the button changes based on whether the ._id of the user who you're viewing is in the logged in user's referenced friends array!
+## 
+#### We're adding friends, but for them to show up on our user profile view, we'll need to go update our controller function for 'showProfile' as we're now requiring the 'friends' field to be passed to the view.  It's time to use .populate()!!!!
+```js
+function showProfile(req, res) {
+User.findById(req.user._id)
+  // Populate is SO HOT right now...
+  .populate("friends")
+  .then((user) => {
+    res.render("users/profile", { title: "Profile Page", user });
+  });
+}
+```
+#### Now that we have our friends, let's go adjust the user profile view:
+```html
+<!-- This is where we'll use a forEach to display friends --> 
+<% user.friends.forEach(f => { %>
+  <a href="/users/<%= f._id %>"><img width="30" id="avatarPhoto" src="<%= f.avatar %>" alt=""><%= f.name %> <%= f.alias ? `(${f.alias})` : '' %></a><br><br>
+<% }) %>
+```
+#### (Notice that we're displaying the alias of the friend if they have one saved!)
+##
+### Our user feature-set is looking pretty solid, so let's start working on the game features!
+___
+### Adding games:
+##
+#### In order for the user to add a game, they'll need to first search for it using an API.  Let's take a detour and go check out [the API](https://medium.com/rawg/launching-public-api-for-the-largest-video-game-database-in-the-world-fa260a336079) that we'll be using for this app.  Let's try out some of the endpoints using Postman and see what the data looks like when it is returned.
+##
+#### Now that we've got a picture of our data, we can write our model.  While we're at it, let's add the router, routes, and controller for the games resource:
+```js
+// /models/game.js
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const reviewSchema = new Schema(
+  {
+    reviewer: String,
+    reviewerPhoto: String,
+    rating: { type: Number, min: 1, max: 10 },
+    content: String,
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const gameSchema = new Schema(
+  {
+    title: String,
+    slug: String,
+    rawgId: Number,
+    released: Date,
+    imageUrl: String,
+    videoUrl: String,
+    metacriticScore: Number,
+    favoritedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    reviews: [reviewSchema],
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = mongoose.model("Game", gameSchema);
+```
+```js
+// server.js
+const gamesRouter = require("./routes/games");
+.
+. // middleware is all here
+.
+app.use("/games", gamesRouter);
+```
+```js
+// /routes/games.js
+const router = require("express").Router();
+const gamesCtrl = require("../controllers/games");
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect("/auth/google");
+}
+
+module.exports = router;
+```
+```js
+// /controllers/games.js
+const Game = require('../models/game.js');
+
+module.exports = {
+
+}
+```
+#### Let's start with a view containing a form for the user to submit a search to the API.  We have a placeholder set up in the navbar, so let's go fill in a route:
+```html
+<li class="nav-item">
+  <!-- Add the route here -->
+  <a class="nav-link" href="/games/new">Add Game</a>
+</li>
+```
+#### Then on to the route:
+```js
+router.get("/new", isLoggedIn, gamesCtrl.new);
+```
+#### Then the controller function:
+```js
+// Start by requiring axios at the top of the file. 
+// We'll be using axios to send calls to the API.
+const axios = require("axios");
+
+module.exports = {
+  new: newGame
+}
+
+function newGame(req, res) {
+  res.render("games/new", {
+    title: "Game Search",
+    user: req.user,
+    // Why are we passing this?  Take a look at the view we're about to write!
+    results: null,
+  });
+}
+```
+#### Let's create /games/new.ejs:
+```html
+<%- include('../partials/header') %>
+
+<h3><%= title %></h3>
+<!-- We'll need to fill in the route for this search form -->
+<form action="" method="POST">
+  <div class="form-row">
+    <div class="col-md-4">
+      <input type="text" class="form-control" name="query" placeholder="Search for game...">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-success">Search</button>
+</form>
+<!-- This is where we'll output the results to the page -->
+<!-- after they are returned from the API call! -->
+<% if (results) { %>
+  <% results.forEach(game => { %>
+    <div class="card" style="width: 18rem;">
+      <img src="<%= game.background_image %>" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title"><%= game.name %> </h5>
+        <p class="card-text">Released: <%= game.released %></p>
+        <p>Platforms:</p>
+        <% game.platforms.forEach(p => { %>
+          <p class="card-text"><%= p.platform.name %></p>
+        <% }) %>
+        <p class="card-text">Metacritic Score: <%= game.metacritic ? game.metacritic : 'N/A' %></p>
+        <!-- This is a button that we'll use to navigate to the game's 'show' page.  We still need to fill in the route -->
+        <a href="" class="btn btn-primary">Details</a>
+      </div>
+    </div>
+  <% }) %>
+<% } %> 
+
+<%- include('../partials/footer') %>
+```
+#### We've got our form, let's make it do something!  Add a route to the form so that we're submitting a post request with the search info:
+```html
+<!-- This is the route we're filling in -->
+<form action="/games/search" method="POST">
+```
+#### Then we write the route:
+```js
+router.post("/search", isLoggedIn, gamesCtrl.search);
+```
+#### Then the controller function:
+```js
+function search(req, res) {
+  axios
+    .get(`https://api.rawg.io/api/games?page_size=5&search=${req.body.query}`)
+    .then((response) => {
+      console.log(response.data.results);
+      res.render("games/new", {
+        title: "Game Search",
+        user: req.user,
+        results: response.data.results,
+      });
+    });
+}
+```
+#### Let's play around with this function using some console.logs before proceeding to make sure we're getting our data back!
+#### Notice how we're rendering the same 'new' search page, but this time we're passing our bountiful data to be displayed all pretty-like for all to see!
+## 
+### Let's add a route to the "details" button so we can navigate to a 'show' page for the game.  Here, we'll have access to more information about the game, potentially a video, and can show who has it in their collection, along with any reviews it has been given.
+```html
+<!-- This is a button that we'll use to navigate to the game's 'show' page.  We still need to fill in the route -->
+<a href="/games/<%= game.slug %>" class="btn btn-primary">Details</a>
+```
+#### Then we write the route:
+```js
+router.get("/:slug", isLoggedIn, gamesCtrl.show);
+```
+#### Then the controller function:
+```js
+function show(req, res) {
+  axios
+    .get(`https://api.rawg.io/api/games/${req.params.slug}`)
+    .then((response) => {
+      Game.findOne({ slug: response.data.slug })
+        .populate("favoritedBy")
+        .then((game) => {
+          if (game) {
+            res.render("games/show", {
+              title: "Game Details",
+              user: req.user,
+              game: response.data,
+              gameId: game._id,
+            });
+          } else {
+            // Is this really necessary?
+            res.render("games/show", {
+              title: "Game Details",
+              user: req.user,
+              game: response.data,
+            });
+          }
+        });
+    });
+}
+
+```
+#### Now we're checking out games!
+
+# More tomorrow:
+### 13. 'Watchlist' functionality
+### 14. 'Add to collection' functionality
+### 15. 'Reviews' functionality
+### 16. 'Game collection' view
+### 17. 'Message Board' functionality
+### 18. 'Reply' functionality
+### 19. Implement real-time chat functionality
 
 
