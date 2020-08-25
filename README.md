@@ -40,7 +40,7 @@ ___
 DATABASE_URL=XXXXXXXXXXXX
 GOOGLE_CLIENT_ID=XXXXXXXXX
 GOOGLE_SECRET=XXXXXXXXXXX
-GOOGLE_CALLBACK=http://localhost:3000/oauth2callback
+GOOGLE_CALLBACK=http://localhost:3000/auth/oauth2callback
 SESSION_SECRET=XXXXXXXXXXX
 ```
 - We'll use a single DATABASE_URL so that we can all add/remove data from the database as we move forward.
@@ -123,6 +123,123 @@ ___
 ### 17. 'Message Board' functionality
 ### 18. 'Reply' functionality
 ### 19. Implement real-time chat functionality
+
+### Phew...  We've got a lot to get done!
+
+___
+
+## 'Profile' View:
+#
+### For the first few steps, I'll write out the steps for the 5-step cycle.  From there on, we'll be in a rhythm!!!
+
+#### Step 1: Determine the method verb & route:
+
+```
+GET /users/profile
+```
+#
+#### Step 2:  Write the UI.  Let's go write that route into our navbar in header.ejs:
+```html
+<li class="nav-item">
+  <!-- Add the route to the href we have waiting to go! -->
+  <a class="nav-link" href="/users/profile">My Profile</a>
+</li>
+```
+# 
+#### Step 3:  Write the route.  We already have a users router, so let's go add our new route:
+```js
+router.get('/profile', isLoggedIn, usersCtrl.showProfile);
+```
+#### Step 4:  Write the controller function:
+```js
+function showProfile(req, res) {
+  // Let's talk about why we're using User.findById.
+  // Ordinarily, you won't see this, as we have access
+  // to the user via req.user.  Because we're going to 
+  // use .populate later on to find "friends," we're 
+  // going to stub it up like this in advance.
+  User.findById(req.user._id)
+    .then((user) => {
+      res.render("users/profile", { title: "Profile Page", user });
+    });
+}
+```
+#### Step 5:  Write the view (There are several items we'll put in placeholders for now, then fill in functionality later.  In the course of normal app development, you'll be adding these things as you code them, but this will minimize our refactoring and bouncing all over the place later down the road.  You're welcome.):
+```html
+<%- include('../partials/header') %>
+
+<h3><%= title %></h3>
+
+<div class="card" style="width: 36rem;">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="profileinfo-tab" data-toggle="tab" href="#profileinfo" role="tab" aria-controls="profileinfo" aria-selected="true">My Info</a>
+      </li>
+      <!-- This is the info for the 'update' tab -->
+      <li class="nav-item">
+        <a class="nav-link" id="updateinfo-tab" data-toggle="tab" href="#updateinfo" role="tab" aria-controls="updateinfo" aria-selected="false">Update Info</a>
+      </li>
+      <!-- This is the info for the 'friends' tab -->
+      <li class="nav-item">
+        <a class="nav-link" id="friends-tab" data-toggle="tab" href="#friends" role="tab" aria-controls="friends" aria-selected="false">Friends</a>
+      </li>
+      <!-- This is the info for the 'watchlist' tab -->
+      <li class="nav-item">
+        <a class="nav-link" id="watchlist-tab" data-toggle="tab" href="#watchlist" role="tab" aria-controls="watchlist" aria-selected="false">Watch List</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="profileinfo" role="tabpanel" aria-labelledby="profileinfo-tab">
+        <div class="card-body">
+          <h5 class="card-title">Name: <%= user.name %></h5>
+          <p class="card-text">Alias: <%= user.alias %></p>
+          <p class="card-text">Email: <%= user.email %></p>
+          <p class="card-text">Bio: <%= user.bio %></p>
+        </div>
+      </div>
+      <!-- This is the card for the 'update' tab -->
+      <div class="tab-pane fade" id="updateinfo" role="tabpanel" aria-labelledby="updateinfo-tab">
+        <div class="card-body">
+            <!-- This is where we'll put our 'update' route -->
+            <form action="" method="POST">
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <label for="userAlias">Alias:</label>
+                        <input type="text" id="userAlias" class="form-control" name="alias" value="<%= user.alias %>">
+                    </div><br>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <label for="avatarUrl">Avatar Image URL:</label>
+                    <input type="text" id="avatarUrl" class="form-control" name="avatar" value="<%= user.avatar %>">
+                  </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <label for="bio">Bio:</label>
+                    <textarea rows="3" id="bio" class="form-control" name="bio"><%= user.bio %></textarea>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-warning">Update</button>
+              </form>
+        </div>
+      </div>
+      <!-- This is the card for the 'friends' tab -->
+      <div class="tab-pane fade" id="friends" role="tabpanel" aria-labelledby="friends-tab">
+        <div class="card-body">
+        <!-- This is where we'll use a forEach to display friends -->     
+        </div>
+      </div>
+      <!-- This is the card for the 'watchlist' tab -->
+      <div class="tab-pane fade show" id="watchlist" role="tabpanel" aria-labelledby="watchlist-tab">
+        <div class="card-body">
+        <!-- This is where we'll use a forEach to display watchlist items -->
+        </div>
+      </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
 
 
 
