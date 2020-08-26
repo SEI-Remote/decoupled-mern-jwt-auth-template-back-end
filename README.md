@@ -60,7 +60,7 @@ ___
 #
 ### Let's spend a few minutes discussing the following ERD:
 ## 
-![ERD](https://raw.git.generalassemb.ly/SEI-R/SEI-R-1/master/work/w05/d2/ad06f8fb-fac4-49c8-9be6-654524d08a7c.png?token=AAAFJC7K6WZPCYRMUOA3A7S7JVEXU)
+![ERD](https://i.imgur.com/e18W2sB.png)
 
 ### Now that we have a good idea of what our models look like and what relationships they'll have with one another, we can plan out the steps we'll need to take to build everything out.
 ##
