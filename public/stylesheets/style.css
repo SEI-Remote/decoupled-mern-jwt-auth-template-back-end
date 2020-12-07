@@ -1,15 +1,9 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: gray;
+  margin: 0;
 }
 
-a {
-  color: #00b7ff;
-}
-
-#avatarPhoto {
-  border-radius: 50%;
-}
-
-#goosePic {
-  margin-right: 15px;
+nav {
+  background-color: white;
 }
