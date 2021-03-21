@@ -6,7 +6,6 @@
 
 const app = require("../server");
 const debug = require("debug")("men_template:server");
-const http = require("http");
 
 /**
  * Get port from environment and store in Express.
@@ -19,7 +18,31 @@ app.set("port", port);
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
+ let server;
+ 
+/**
+ * When we're in development we want to run our environment in https so that we
+ * are able to keep our Google OAuth application set to in production. 
+ * 
+ * When we're in production Herkou will manage our certificates for us so we
+ * still want to run our app in http, which lets heroku manage this process.
+ */
+
+ if (process.env.NODE_ENV !== "production") {
+  const https = require('https');
+  const fs = require('fs');
+  const homedir = require('os').homedir();
+
+  const options = {
+    key: fs.readFileSync(`${homedir}/certs/localhost/localhost.key`),
+    cert: fs.readFileSync(`${homedir}/certs/localhost/localhost.crt`)
+  };
+
+  server = https.createServer(options, app)
+} else {
+  const http = require('http')
+  server = http.createServer(app);
+}
 
 /**
  * Listen on provided port, on all network interfaces.
