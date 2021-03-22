@@ -33,7 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// passport middleware
+// session middleware
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -44,6 +44,8 @@ app.use(
     },
   })
 );
+
+// passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
