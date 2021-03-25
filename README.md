@@ -43,6 +43,12 @@ git commit -m "initial commit"
 git push -u origin main
 ```
 
+Run npm i to fetch the template's dependencies:
+
+```bash
+npm i
+```
+
 touch a .env file:
 
 ```bash
