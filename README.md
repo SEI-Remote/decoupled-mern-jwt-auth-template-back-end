@@ -35,18 +35,18 @@ Use the GitHub CLI to create a new project repository on GitHub:
 gh repo create <name-of-your-app-here>
 ```
 
-Finally, make an initial commit:
+Run npm i to fetch the template's dependencies:
+
+```bash
+npm i
+```
+
+Then, make an initial commit:
 
 ```bash
 git add .
 git commit -m "initial commit"
 git push -u origin main
-```
-
-Run npm i to fetch the template's dependencies:
-
-```bash
-npm i
 ```
 
 touch a .env file:
