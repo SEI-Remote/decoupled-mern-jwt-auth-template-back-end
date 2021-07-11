@@ -6,10 +6,9 @@ export {
 
 const userSchema = new mongoose.Schema(
   {
-    name: String,
     email: String,
-    avatar: String,
     googleId: String,
+    profile: {type: mongoose.Schema.Types.ObjectId, ref: "Profile"}
   },
   {
     timestamps: true,
