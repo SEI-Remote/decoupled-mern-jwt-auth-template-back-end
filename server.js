@@ -1,37 +1,43 @@
-const createError = require("http-errors");
-const express = require("express");
-const path = require("path");
-const logger = require("morgan");
-const session = require("express-session");
-const passport = require("passport");
-const methodOverride = require("method-override");
-
-// load env variables
-require("dotenv").config();
+import 'dotenv/config.js'
+import express from 'express'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import createError from 'http-errors'
+import session from 'express-session'
+import logger from 'morgan'
+import methodOverride from 'method-override'
+import passport from 'passport'
 
 // create the express app
-const app = express();
+const app = express()
 
 // connect to MongoDB with mongoose
-require("./config/database");
+import('./config/database.js')
 
 // load passport
-require("./config/passport");
+import('./config/passport.js')
 
 // require routes
-const indexRouter = require("./routes/index");
-const authRouter = require("./routes/auth");
+import { router as indexRouter } from './routes/index.js'
+import { router as authRouter } from './routes/auth.js'
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+app.set(
+  'views',
+  path.join(path.dirname(fileURLToPath(import.meta.url)), 'views')
+)
+app.set('view engine', 'ejs')
 
-// misc middleware
-app.use(methodOverride("_method"));
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
+// middleware
+app.use(methodOverride('_method'))
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(
+  express.static(
+    path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')
+  )
+)
 
 // session middleware
 app.use(
@@ -40,33 +46,32 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      sameSite: "lax",
-    },
+      sameSite: 'lax',
+    }
   })
-);
+)
 
 // passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize())
+app.use(passport.session())
 
 // router middleware
-app.use("/", indexRouter);
-app.use("/auth", authRouter);
+app.use('/', indexRouter)
+app.use('/auth', authRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
-});
+  next(createError(404))
+})
 
-// error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.message = err.message
+  res.locals.error = req.app.get('env') === 'development' ? err : {}
 
   // render the error page
-  res.status(err.status || 500);
-  res.render("error");
-});
+  res.status(err.status || 500)
+  res.render('error')
+})
 
-module.exports = app;
+export { app }

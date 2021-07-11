@@ -1,0 +1,19 @@
+  <% if (!user) { %>
+    <% console.log("this runs!") %> 
+    <link rel="stylesheet" href="/stylesheets/siwg.css">
+  <% } %>
+</head>
+<body>
+  <nav>
+    <% if (user) { %>
+      <a href="/auth/logout">
+        <button type="submit" class="btn btn-warning">Logout</button>
+      </a>
+    <% } else { %>
+      <a href="/auth/google" class="siwg-link">
+        <button type="submit" class="siwg">
+          <img id="siwg-image" alt="Sign in with Google" />
+        </button>
+      </a>
+    <% } %>
+  </nav>

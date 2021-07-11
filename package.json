@@ -1,20 +1,21 @@
 {
   "name": "men_template",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www.js"
   },
   "dependencies": {
-    "debug": "~2.6.9",
-    "dotenv": "^8.2.0",
-    "ejs": "~2.6.1",
-    "express": "~4.16.1",
-    "express-session": "^1.17.1",
-    "http-errors": "~1.6.3",
+    "debug": "^4.3.2",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "http-errors": "^1.7.2",
     "method-override": "^3.0.0",
-    "mongoose": "^5.12.1",
-    "morgan": "~1.9.1",
+    "mongoose": "^5.13.2",
+    "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0"
   }

@@ -1,0 +1,42 @@
+.siwg {
+  background: url(/images/auth/google/siwg_light_normal.png);
+  cursor: pointer;
+  border: none;
+  width: 191px;
+  height: 46px;
+}
+
+.siwg-link {
+  display: inline-block;
+}
+
+.siwg:focus,
+.siwg-link:focus {
+  background: url(/images/auth/google/siwg_light_focus.png);
+  outline: none;
+}
+
+.siwg:active {
+  background: url(/images/auth/google/siwg_light_pressed.png);
+}
+
+/* This pre-loads the siwg focus and active buttons */
+.siwg::after{
+  position:absolute; 
+  width:0; 
+  height:0; 
+  overflow:hidden; 
+  z-index:-1; 
+  content:url(/images/auth/google/siwg_light_pressed.png) url(/images/auth/google/siwg_light_focus.png)
+}
+
+/* This hides the siwg alt text and broken image icon */
+#siwg-image {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px; 
+}

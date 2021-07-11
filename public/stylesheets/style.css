@@ -28,6 +28,8 @@ body {
 nav {
   background-color: white;
   font-size: 1.6rem;
+  display: flex;
+  justify-content: center;
 }
 
 main {
