@@ -8,9 +8,6 @@ import logger from 'morgan'
 import methodOverride from 'method-override'
 import passport from 'passport'
 
-// create the express app
-const app = express()
-
 // connect to MongoDB with mongoose
 import('./config/database.js')
 
@@ -20,6 +17,9 @@ import('./config/passport.js')
 // require routes
 import { router as indexRouter } from './routes/index.js'
 import { router as authRouter } from './routes/auth.js'
+
+// create the express app
+const app = express()
 
 // view engine setup
 app.set(

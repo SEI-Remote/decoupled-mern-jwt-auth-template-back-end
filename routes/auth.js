@@ -1,10 +1,6 @@
 import { Router } from 'express'
 import passport from 'passport'
 
-export {
-  router
-}
-
 const router = Router()
 
 router.get(
@@ -25,3 +21,6 @@ router.get('/logout', function (req, res) {
   res.redirect('/')
 })
 
+export {
+  router
+}

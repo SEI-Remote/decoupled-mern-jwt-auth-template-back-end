@@ -1,9 +1,5 @@
 import mongoose from 'mongoose'
 
-export {
-  Profile
-}
-
 const profileSchema = new mongoose.Schema({
   name: String,
   avatar: String,
@@ -12,3 +8,7 @@ const profileSchema = new mongoose.Schema({
 })
 
 const Profile = mongoose.model('Profile', profileSchema)
+
+export {
+  Profile
+}

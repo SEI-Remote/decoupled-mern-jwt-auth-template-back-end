@@ -1,9 +1,5 @@
 import mongoose from 'mongoose'
 
-export {
-  User
-}
-
 const userSchema = new mongoose.Schema(
   {
     email: String,
@@ -16,3 +12,7 @@ const userSchema = new mongoose.Schema(
 )
 
 const User = mongoose.model('User', userSchema)
+
+export {
+  User
+}
