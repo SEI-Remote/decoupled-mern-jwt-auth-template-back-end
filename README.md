@@ -1,6 +1,8 @@
-# MERN Stack with JWT Auth Template
+# Decoupled MERN Stack with JWT Auth Template - Back End
 
-This is a MERN Stack template that includes JWT Authentication.
+This is the back end of a decoupled MERN Stack app that includes JWT Authentication.
+
+When combined with the front end found [here](https://github.com/SEI-Remote/decoupled-mern-jwt-auth-template-front-end), you'll have all you need to build a full stack MERN app!
 
 Use this to go build things! 🚀
 
@@ -41,14 +43,6 @@ Run npm i to fetch the template's dependencies:
 npm i
 ```
 
-Then, make an initial commit:
-
-```bash
-git add .
-git commit -m "initial commit"
-git push -u origin main
-```
-
 touch a .env file:
 
 ```bash
@@ -64,6 +58,14 @@ SECRET=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 Replace the `DATABASE_URL` and `SECRET` with values that you provide.
 
-Delete this README.md
+> 🚨 Place secrets in this `.env` file. The contents of this file WILL NOT be exposed to site visitors.
+
+Delete this README.md, then make an initial commit:
+
+```bash
+git add .
+git commit -m "initial commit"
+git push -u origin main
+```
 
 You're done!
