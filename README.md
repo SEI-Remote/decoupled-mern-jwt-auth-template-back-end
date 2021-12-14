@@ -1,16 +1,16 @@
-# MEN Stack with OAuth Template
+# MERN Stack with JWT Auth Template
 
-This is a MEN Stack template that includes OAuth.
+This is a MERN Stack template that includes JWT Authentication.
 
 Use this to go build things! 🚀
 
 ## To Use This Template
 
-__Replace `<name-of-your-app-here>` in the commands below with the name of your app!__
+**Replace `<name-of-your-app-here>` in the commands below with the name of your app!**
 
 ```bash
-git clone https://github.com/SEI-Remote/men-stack-oauth-template.git <name-of-your-app-here>
-cd <name-of-your-app-here>
+git clone https://github.com/SEI-Remote/decoupled-mern-jwt-auth-template-back-end <name-of-your-app-here>-back-end
+cd <name-of-your-app-here>-back-end
 ```
 
 Once you are in the project directory:
@@ -32,7 +32,7 @@ git init
 Use the GitHub CLI to create a new project repository on GitHub:
 
 ```bash
-gh repo create <name-of-your-app-here>
+gh repo create <name-of-your-app-here>-back-end
 ```
 
 Run npm i to fetch the template's dependencies:
@@ -59,13 +59,10 @@ Fill it with the following:
 
 ```
 DATABASE_URL=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-GOOGLE_CALLBACK=http://localhost:3000/auth/google/oauth2callback
-GOOGLE_CLIENT_ID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-GOOGLE_SECRET=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-SESSION_SECRET=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+SECRET=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-Replace the `DATABASE_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_SECRET`, and `SESSION_SECRET` with values that you provide.
+Replace the `DATABASE_URL` and `SECRET` with values that you provide.
 
 Delete this README.md
 

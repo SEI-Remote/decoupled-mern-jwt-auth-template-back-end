@@ -1,26 +1,12 @@
 import { Router } from 'express'
-import passport from 'passport'
+import * as authCtrl from '../controllers/auth.js'
 
 const router = Router()
 
-router.get(
-  '/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-)
+/*---------- Public Routes ----------*/
+router.post('/signup', authCtrl.signup)
+router.post('/login', authCtrl.login)
 
-router.get(
-  '/google/oauth2callback',
-  passport.authenticate('google', {
-    successRedirect: '/',
-    failureRedirect: '/auth/google',
-  })
-)
+/*---------- Protected Routes ----------*/
 
-router.get('/logout', function (req, res) {
-  req.logout()
-  res.redirect('/')
-})
-
-export {
-  router
-}
+export { router }
