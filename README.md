@@ -11,7 +11,7 @@ Use this to go build things! 🚀
 **Replace `<name-of-your-app-here>` in the commands below with the name of your app!**
 
 ```bash
-git clone https://github.com/SEI-Remote/decoupled-mern-jwt-auth-template-back-end <name-of-your-app-here>-back-end
+git clone https://github.com/SEI-Remote-WC/jwt-auth-mern-template-back-end <name-of-your-app-here>-back-end
 cd <name-of-your-app-here>-back-end
 ```
 

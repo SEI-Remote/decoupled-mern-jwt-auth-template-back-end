@@ -3,7 +3,6 @@ import express from 'express'
 import logger from 'morgan'
 import cors from 'cors'
 
-// import routes
 import { router as profilesRouter } from './routes/profiles.js'
 import { router as authRouter } from './routes/auth.js'
 

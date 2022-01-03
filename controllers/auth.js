@@ -48,6 +48,25 @@ function login(req, res) {
   })
 }
 
+function changePassword(req, res) {
+  User.findById(req.user._id)
+  .then(user => {
+    if (!user) return res.status(401).json({ err: 'User not found'})
+    user.comparePassword(req.body.pw, (err, isMatch) => {
+      if (isMatch) {
+        user.password = req.body.newPw
+        user.save()
+        .then(()=> {
+          const token = createJWT(user)
+          res.json({ token })
+        })
+      } else {
+        res.status(401).json({ err: 'Incorrect password' })
+      }
+    })
+  })
+}
+
 /* --== Helper Functions ==-- */
 
 function createJWT(user) {
@@ -58,4 +77,4 @@ function createJWT(user) {
   )
 }
 
-export {signup, login}
+export {signup, login, changePassword}
