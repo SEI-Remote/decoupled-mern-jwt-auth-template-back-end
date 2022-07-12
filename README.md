@@ -31,10 +31,10 @@ Re-initialize a git repository:
 git init
 ```
 
-Use the GitHub CLI to create a new project repository on GitHub:
+Use the GitHub CLI to create a new public project repository on GitHub and add a remote named origin for this repo:
 
 ```bash
-gh repo create <name-of-your-app-here>-back-end --public
+gh repo create <name-of-your-app-here>-back-end --public --source=. --remote=origin
 ```
 
 Run npm i to fetch the template's dependencies:
