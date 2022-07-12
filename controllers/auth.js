@@ -7,7 +7,7 @@ function signup(req, res) {
   .then(profile => {
     if (profile) {
       throw new Error('Account already exists')
-    } else if (!process.env.SECRET){
+    } else if (!process.env.SECRET) {
       throw new Error('no SECRET in .env file')
     } else {
       Profile.create(req.body)
@@ -20,20 +20,20 @@ function signup(req, res) {
         })
         .catch(err => {
           Profile.findByIdAndDelete(req.body.profile)
-          res.status(500).json({err: err.errmsg})
+          res.status(500).json({ err: err.errmsg })
         })
       })
     }
   })
   .catch(err => {
-    res.status(500).json({err: err.message})
+    res.status(500).json({ err: err.message })
   })
 }
 
 function login(req, res) {
   User.findOne({ email: req.body.email })
   .then(user => {
-    if (!user) return res.status(401).json({ err: 'User not found'})
+    if (!user) return res.status(401).json({ err: 'User not found' })
     user.comparePassword(req.body.pw, (err, isMatch) => {
       if (isMatch) {
         const token = createJWT(user)
@@ -51,12 +51,12 @@ function login(req, res) {
 function changePassword(req, res) {
   User.findById(req.user._id)
   .then(user => {
-    if (!user) return res.status(401).json({ err: 'User not found'})
+    if (!user) return res.status(401).json({ err: 'User not found' })
     user.comparePassword(req.body.pw, (err, isMatch) => {
       if (isMatch) {
         user.password = req.body.newPw
         user.save()
-        .then(()=> {
+        .then(() => {
           const token = createJWT(user)
           res.json({ token })
         })
@@ -70,11 +70,7 @@ function changePassword(req, res) {
 /* --== Helper Functions ==-- */
 
 function createJWT(user) {
-  return jwt.sign(
-    { user }, 
-    process.env.SECRET,
-    { expiresIn: '24h' }
-  )
+  return jwt.sign({ user }, process.env.SECRET, { expiresIn: '24h' })
 }
 
-export {signup, login, changePassword}
+export { signup, login, changePassword }

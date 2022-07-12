@@ -34,7 +34,7 @@ git init
 Use the GitHub CLI to create a new project repository on GitHub:
 
 ```bash
-gh repo create <name-of-your-app-here>-back-end
+gh repo create <name-of-your-app-here>-back-end --public
 ```
 
 Run npm i to fetch the template's dependencies:
