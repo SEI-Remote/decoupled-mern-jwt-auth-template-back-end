@@ -54,9 +54,10 @@ Fill it with the following:
 ```
 DATABASE_URL=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 SECRET=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+CLOUDINARY_URL=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-Replace the `DATABASE_URL` and `SECRET` with values that you provide.
+Replace the `DATABASE_URL`, `SECRET`, and `CLOUDINARY_URL` with values that you provide.
 
 > 🚨 Place secrets in this `.env` file. The contents of this file WILL NOT be exposed to site visitors.
 
