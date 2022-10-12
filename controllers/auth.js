@@ -3,9 +3,9 @@ import { Profile } from '../models/profile.js'
 import jwt from 'jsonwebtoken'
 
 function signup(req, res) {
-  Profile.findOne({ email: req.body.email })
-  .then(profile => {
-    if (profile) {
+  User.findOne({ email: req.body.email })
+  .then(user => {
+    if (user) {
       throw new Error('Account already exists')
     } else if (!process.env.SECRET) {
       throw new Error('no SECRET in .env file')

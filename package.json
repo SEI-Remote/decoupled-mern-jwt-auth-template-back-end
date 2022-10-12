@@ -7,14 +7,14 @@
     "start": "node ./bin/www.js"
   },
   "dependencies": {
-    "bcrypt": "^5.0.1",
-    "cloudinary": "^1.30.0",
+    "bcrypt": "^5.1.0",
+    "cloudinary": "^1.32.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
-    "express": "^4.18.1",
-    "express-form-data": "^2.0.18",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-form-data": "^2.0.19",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.4.3",
+    "mongoose": "^6.6.5",
     "morgan": "^1.10.0"
   }
 }

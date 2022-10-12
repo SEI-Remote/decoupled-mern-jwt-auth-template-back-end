@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
 
-const profileSchema = new mongoose.Schema({
-  email: { type: String, required: true, lowercase: true, unique: true },
+const Schema = mongoose.Schema
+
+const profileSchema = new Schema({
   name: String,
-  photo: { type: String }
+  photo: String
 },{
   timestamps: true,
 })
