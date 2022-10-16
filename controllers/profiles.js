@@ -14,7 +14,7 @@ function addPhoto(req, res) {
   const imageFile = req.files.photo.path
   Profile.findById(req.params.id)
   .then(profile => {
-    cloudinary.uploader.upload(imageFile, {tags: `${profile.email}`})
+    cloudinary.uploader.upload(imageFile, {tags: `${req.user.email}`})
     .then(image => {
       profile.photo = image.url
       profile.save()
