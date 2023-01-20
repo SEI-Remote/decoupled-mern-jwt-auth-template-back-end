@@ -1,5 +1,5 @@
 {
-  "name": "mern-jwt-template",
+  "name": "mern-jwt-template-back-end",
   "version": "0.2.0",
   "private": true,
   "type": "module",

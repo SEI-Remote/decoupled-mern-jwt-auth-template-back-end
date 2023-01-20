@@ -1,6 +1,5 @@
 // Module dependencies
 import { app } from '../server.js'
-import debug from 'debug'
 import http from 'http'
 
 // Get port from environment and store in Express
@@ -56,6 +55,5 @@ function onError(error) {
 function onListening() {
   const addr = server.address()
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`
-  debug(`Listening on ${bind}`)
   console.log(`Listening on ${bind}`)
 }
