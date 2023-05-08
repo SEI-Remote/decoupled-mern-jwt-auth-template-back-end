@@ -8,13 +8,13 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
-    "cloudinary": "^1.32.0",
+    "cloudinary": "^1.36.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "express-form-data": "^2.0.19",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.6.5",
+    "express-form-data": "^2.0.22",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.1.0",
     "morgan": "^1.10.0"
   }
 }
