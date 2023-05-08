@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import * as authCtrl from '../controllers/auth.js'
 import { decodeUserFromToken, checkAuth } from '../middleware/auth.js'
+import * as authCtrl from '../controllers/auth.js'
 
 const router = Router()
 
