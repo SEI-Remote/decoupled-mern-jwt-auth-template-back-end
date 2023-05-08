@@ -33,6 +33,7 @@ async function login(req, res) {
   try {
     const user = await User.findOne({ email: req.body.email })
     if (!user) throw new Error('User not found')
+    
     user.comparePassword(req.body.pw, (err, isMatch) => {
       if (!isMatch) throw new Error('Incorrect password')
 

@@ -23,8 +23,9 @@ userSchema.set('toJSON', {
 userSchema.pre('save', async function (next) {
   const user = this
   if (!user.isModified('password')) return next()
+  
   try {
-    const hash = await bcrypt.hash(user.password, SALT_ROUNDS)
+    const hash = bcrypt.hash(user.password, SALT_ROUNDS)
     user.password = hash
     next()
   } catch (err) {
