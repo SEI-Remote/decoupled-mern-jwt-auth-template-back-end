@@ -38,13 +38,13 @@ Create a repo for this project on GitHub and add that remote to your project wit
 git remote add origin your-repo-URL-here
 ```
 
-Run npm i to fetch the template's dependencies:
+Run `npm i` to fetch the template's dependencies:
 
 ```bash
 npm i
 ```
 
-touch a .env file:
+touch a `.env` file:
 
 ```bash
 touch .env
@@ -62,7 +62,7 @@ Replace the `DATABASE_URL`, `SECRET`, and `CLOUDINARY_URL` with values that you 
 
 > 🚨 Place secrets in this `.env` file. The contents of this file WILL NOT be exposed to site visitors.
 
-Delete this README.md, then make an initial commit:
+Delete this `README.md`, then make an initial commit:
 
 ```bash
 git add .
@@ -71,6 +71,7 @@ git push origin main
 ```
 
 Lauch the app with:
+
 ```bash
 nodemon
 ```
