@@ -8,7 +8,7 @@ Use this to go build things! 🚀
 
 ## To Use This Template
 
-**Replace `<name-of-your-app-here>` in the commands below with the name of your app!**
+**Replace `<name-of-your-app-here>` (including the `<` and `>`) in the commands below with the name of your app!**
 
 ```bash
 git clone https://github.com/SEI-Remote/decoupled-mern-jwt-auth-template-back-end <name-of-your-app-here>-back-end
@@ -68,6 +68,11 @@ Delete this README.md, then make an initial commit:
 git add .
 git commit -m "initial commit"
 git push origin main
+```
+
+Lauch the app with:
+```bash
+nodemon
 ```
 
 You're done!
