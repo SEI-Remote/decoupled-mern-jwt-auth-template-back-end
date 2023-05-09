@@ -5,7 +5,10 @@ import { Profile } from '../models/profile.js'
 
 async function signup(req, res) {
   try {
-    if (!process.env.SECRET) throw new Error('no SECRET in .env file')
+    if (!process.env.SECRET) throw new Error('no SECRET in back-end .env')
+    if (!process.env.CLOUDINARY_URL) {
+      throw new Error('no CLOUDINARY_URL in back-end .env file')
+    }
 
     const user = await User.findOne({ email: req.body.email })
     if (user) throw new Error('Account already exists')
@@ -23,6 +26,7 @@ async function signup(req, res) {
         await Profile.findByIdAndDelete(req.body.profile)
       }
     } catch (err) {
+      console.log(err)
       return res.status(500).json({ err: err.message })
     }
     res.status(500).json({ err: err.message })
@@ -31,17 +35,21 @@ async function signup(req, res) {
 
 async function login(req, res) {
   try {
+    if (!process.env.SECRET) throw new Error('no SECRET in back-end .env')
+    if (!process.env.CLOUDINARY_URL) {
+      throw new Error('no CLOUDINARY_URL in back-end .env')
+    }
+
     const user = await User.findOne({ email: req.body.email })
     if (!user) throw new Error('User not found')
-    
-    user.comparePassword(req.body.pw, (err, isMatch) => {
-      if (!isMatch) throw new Error('Incorrect password')
 
-      const token = createJWT(user)
-      res.json({ token })
-    })
+    const isMatch = await user.comparePassword(req.body.password)
+    if (!isMatch) throw new Error('Incorrect password')
+
+    const token = createJWT(user)
+    res.json({ token })
   } catch (err) {
-    handleAuthError(err)
+    handleAuthError(err, res)
   }
 }
 
@@ -50,23 +58,23 @@ async function changePassword(req, res) {
     const user = await User.findById(req.user._id)
     if (!user) throw new Error('User not found')
 
-    user.comparePassword(req.body.pw, async (err, isMatch) => {
-      if (!isMatch) throw new Error('Incorrect password')
+    const isMatch = user.comparePassword(req.body.password)
+    if (!isMatch) throw new Error('Incorrect password')
 
-      user.password = req.body.newPw
-      await user.save()
+    user.password = req.body.newPassword
+    await user.save()
 
-      const token = createJWT(user)
-      res.json({ token })
-    })
+    const token = createJWT(user)
+    res.json({ token })
+    
   } catch (err) {
-    handleAuthError(err)
+    handleAuthError(err, res)
   }
 }
 
 /* --== Helper Functions ==-- */
 
-function handleAuthError(err) {
+function handleAuthError(err, res) {
   console.log(err)
   const { message } = err
   if (message === 'User not found' || message === 'Incorrect password') {
