@@ -32,7 +32,7 @@ Re-initialize a git repository:
 git init
 ```
 
-Create a repo for this project on GitHub and add that remote to your project with:
+Create a repo for this project on GitHub and add that remote to your project with (replacing your-repo-URL-here with the URL of the repo you just created):
 
 ```bash
 git remote add origin your-repo-URL-here
@@ -70,7 +70,7 @@ git commit -m "initial commit"
 git push origin main
 ```
 
-Lauch the app with:
+Launch the app with:
 
 ```bash
 nodemon
